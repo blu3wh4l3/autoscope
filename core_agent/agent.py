@@ -5,7 +5,7 @@ class Agent:
     def runTask(self, goal):
         if "nmap" in goal.lower():
             print("[+] Running Nmap scan on the target....")
-            command = "nmap -sV 192.168.206.129"
+            command = "nmap -sV 192.168.1.43"
 
         elif "whoami" in goal.lower():
             print("[+] Running whoami command on the target....")

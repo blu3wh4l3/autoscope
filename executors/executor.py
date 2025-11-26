@@ -1,0 +1,43 @@
+import paramiko
+import platform
+import subprocess
+
+class KaliCommandExecutor:
+
+    OS_NAME = platform.system()
+    """
+    This module determines whether the code is running on a Kali Linux host. 
+    If it is, commands are executed locally. If not, the module establishes an SSH connection to a Kali machine 
+    and runs the commands remotely.
+    """
+    @staticmethod
+    def is_kali():
+        if KaliCommandExecutor.OS_NAME!="Linux":
+            return False
+        try:
+            with open("/etc/os-release") as f:
+                return "kali" in f.read().lower()
+            
+        except:
+            return False
+
+    def __init__(self, host, user, key_path):
+        self.host = host
+        self.user = user
+        self.key_path = key_path
+
+    def run(self, cmd):
+        if KaliCommandExecutor.is_kali():
+            # Run command lcoally on kali
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            return result.stdout, result.stderr
+        
+        else:
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(self.host, username=self.user,key_filename=self.key_path)
+            stdin, stdout, stderr = ssh.exec_command(cmd)
+            output = stdout.read().decode()
+            error = stderr.read().decode()
+            ssh.close()
+            return output, error
