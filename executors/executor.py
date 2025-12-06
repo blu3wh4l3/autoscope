@@ -1,7 +1,12 @@
 import paramiko
 import platform
 import subprocess
-
+from paramiko.ssh_exception import (
+    NoValidConnectionsError,
+    AuthenticationException,
+    SSHException,
+    BadHostKeyException
+)
 class KaliCommandExecutor:
 
     OS_NAME = platform.system()
@@ -35,7 +40,15 @@ class KaliCommandExecutor:
         else:
             ssh = paramiko.SSHClient()
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-            ssh.connect(self.host, username=self.user,key_filename=self.key_path)
+
+            try:
+                ssh.connect(self.host, username=self.user,key_filename=self.key_path, timeout=5,banner_timeout=5,auth_timeout=5)
+                print("[+]SSH Connection to Kali VM is Successfull.")
+            
+            except(NoValidConnectionsError, SSHException, AuthenticationException,
+                    BadHostKeyException, TimeoutError) as e:
+                print(f"[!]SSH Connection to remote host failed:{e}")
+                return None,None
             stdin, stdout, stderr = ssh.exec_command(cmd)
             output = stdout.read().decode()
             error = stderr.read().decode()
