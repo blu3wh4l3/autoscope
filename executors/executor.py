@@ -7,7 +7,7 @@ from paramiko.ssh_exception import (
     SSHException,
     BadHostKeyException
 )
-class KaliCommandExecutor:
+class Executor:
 
     OS_NAME = platform.system()
     """
@@ -17,7 +17,7 @@ class KaliCommandExecutor:
     """
     @staticmethod
     def is_kali():
-        if KaliCommandExecutor.OS_NAME!="Linux":
+        if Executor.OS_NAME!="Linux":
             return False
         try:
             with open("/etc/os-release") as f:
@@ -31,10 +31,10 @@ class KaliCommandExecutor:
         self.user = user
         self.key_path = key_path
 
-    def run(self, cmd):
+    def run(self, command):
         if KaliCommandExecutor.is_kali():
             # Run command lcoally on kali
-            result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+            result = subprocess.run(command, shell=True, capture_output=True, text=True)
             return result.stdout, result.stderr
         
         else:
@@ -49,7 +49,7 @@ class KaliCommandExecutor:
                     BadHostKeyException, TimeoutError) as e:
                 print(f"[!]SSH Connection to remote host failed:{e}")
                 return None,None
-            stdin, stdout, stderr = ssh.exec_command(cmd)
+            stdin, stdout, stderr = ssh.exec_command(command)
             output = stdout.read().decode()
             error = stderr.read().decode()
             ssh.close()

@@ -131,3 +131,41 @@ Behavior Constraints:
 - No hallucinations.
 - No assumptions.
 - No commentary.
+
+# ROUTER DEFINITION
+class Router:
+    - stores tool mapping internally
+    - stores executor instance
+    - has an execute(action, args) method
+    - validates action exists
+    - calls the correct skill
+    - handles exceptions
+    - logs what was run
+
+
+
+def main():
+
+    # 1. Choose execution environment
+    if user chooses local:
+        executor = LocalExecutor()
+    else:
+        executor = SSHExecutor(host, user, password)
+
+    # 2. Initialize LLM
+    llm = LLM(provider="ollama", model="llama3.1:8b")
+
+    # 3. Initialize Router with executor
+    router = Router(executor)
+
+    # 4. Initialize State Manager
+    state = ReconState()
+
+    # 5. Initialize Agent with llm, router, and state
+    agent = Agent(llm, router, state)
+
+    # 6. Start interactive loop
+    while True:
+        goal = input("Enter goal: ")
+        result = agent.handle(goal)
+        print(result)

@@ -1,9 +1,26 @@
-from executors.executor import KaliCommandExecutor
+from executors.executor import Executor
 from core_agent.agent import Agent
-import platform
+from core_agent.llm import LLM
+from core_agent.router import Router
 
-comamndExecutor = KaliCommandExecutor("192.168.206.129","kali", "/home/anunv/.ssh/id_ed25519" )
-agent = Agent(comamndExecutor)
-while True:
-    goal = input("What recon type do you want to perform on the target? ")
-    print(f"Output: {agent.runTask(goal)}")
+
+url = "http://localhost:11434/api/generate"
+headers = {"Content-Type": "application/json"}
+provider = "ollama"
+model = "llama3.1:8b"
+
+# data = {
+#     "model": "llama3.1:8b",   # use your local ollama model name
+#     "prompt": "Find publicly available subdomains of tesla.com and list them in json format",
+#     "stream": False      # ensures full response is returned at once
+# }
+
+executor = Executor("192.168.206.129","kali", "/home/anunv/.ssh/id_ed25519" )
+llm = LLM(provider, model, url)
+goal = input("What recon type do you want to perform on the target? ")
+agent = Agent(executor)
+
+#Send the user input to agent for action planning
+
+
+print(f"Output: {agent.runTask(goal)}")

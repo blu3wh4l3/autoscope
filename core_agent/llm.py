@@ -7,7 +7,7 @@ class LLM:
         self.url = url
         self.system_prompt = system_prompt
     
-    def generate(self, userprompt:str) -> str
+    def generate(self, userprompt:str) -> str:
         data = {
             "model": self.model,
             "prompt": self.prompt,
