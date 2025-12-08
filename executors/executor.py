@@ -32,7 +32,7 @@ class Executor:
         self.key_path = key_path
 
     def run(self, command):
-        if KaliCommandExecutor.is_kali():
+        if Executor.is_kali():
             # Run command lcoally on kali
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             return result.stdout, result.stderr

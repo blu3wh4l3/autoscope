@@ -1,4 +1,4 @@
 def run(executor,domain):
-    command = f"subfinder -d {args.domain}"
-    output = executor.exec(command)
+    command = f"subfinder -d {domain}"
+    output = executor.run(command)
     print(output)

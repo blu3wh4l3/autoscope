@@ -12,10 +12,10 @@ class Agent:
         #     print("[+] Running whoami command on the target....")
         #     command = "whoami"
         if "subdomain" in goal.lower():
-            action = "run_subfinder"
-            targetDomain  = input("Enter the target domain: ")
-            args = {"domain": self.targetDomain}
+            self.action = "run_subfinder"
+            self.targetDomain  = input("Enter the target domain: ")
+            self.args = {"domain": self.targetDomain}
+            self.router.execute(self.action,self.args)
+
         else:
             print("[!] Invalid task: {goal}")
-        output, error = self.commandExecutor.run(command)
-        return output

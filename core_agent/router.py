@@ -1,7 +1,7 @@
 from skills.subdomain_enum import subfinder
 class Router:
-    def __init__(self,commandExecutor):
-        self.executor = commandExecutor
+    def __init__(self,executor):
+        self.executor = executor
         self.tools = {
             "run_subfinder" : subfinder.run
         }
