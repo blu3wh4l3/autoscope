@@ -53,4 +53,4 @@ class Executor:
             output = stdout.read().decode()
             error = stderr.read().decode()
             ssh.close()
-            return output, error
+            return output

@@ -1,4 +1,8 @@
-def run(executor,domain):
+from rich.console import Console
+from rich.spinner import Spinner
+console = Console()
+def run(domain,executor):
     command = f"subfinder -d {domain}"
-    output = executor.run(command)
+    with console.status("[bold green] Running subfinder..."):
+        output = executor.run(command)
     print(output)
