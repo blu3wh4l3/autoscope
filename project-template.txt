@@ -143,6 +143,17 @@ class Router:
     - logs what was run
 
 
+self.tools = {
+    "run_subfinder": subfinder.run,
+    "run_amass_passive": amass.run_passive,
+    "merge_subdomains": merger.merge,
+    "probe_live_hosts": httpx.run,
+    "scan_ports": nmap.run,
+    "summarize_subdomains": summarizer.summarize,
+    "finish": lambda: None
+}
+
+
 
 def main():
 
@@ -169,3 +180,15 @@ def main():
         goal = input("Enter goal: ")
         result = agent.handle(goal)
         print(result)
+
+#ORGANIZING PROMPTS
+prompts/
+   system/
+      agent_system_prompt.txt
+      action_planner_prompt.txt
+      summarizer_prompt.txt
+   user/
+      goal_template.txt
+   skills/
+      subdomain_prompt.txt
+      amass_prompt.txt
