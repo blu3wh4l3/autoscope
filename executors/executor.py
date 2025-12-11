@@ -35,7 +35,7 @@ class Executor:
         if Executor.is_kali():
             # Run command lcoally on kali
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
-            return result.stdout, result.stderr
+            return result.stdout
         
         else:
             ssh = paramiko.SSHClient()
@@ -51,6 +51,5 @@ class Executor:
                 return None,None
             stdin, stdout, stderr = ssh.exec_command(command)
             output = stdout.read().decode()
-            error = stderr.read().decode()
             ssh.close()
             return output
