@@ -1,12 +1,3 @@
-## Install Paramiko
-sudo apt install python3-paramiko
-## SSH Key Generation
-ssh-keygen -t ed25519    # accept defaults
-ssh-copy-id username@192.168.1.42   # if ssh-copy-id available
-# or manually copy ~/.ssh/id_ed25519.pub into Kali's ~/.ssh/authorized_keys
-
-# PROJECT STRUCTURE
-
 autoscope/
 │
 ├── core/
@@ -58,7 +49,7 @@ autoscope/
 └── main.py
 
 
-# Phase 1 — Rule-Based Routing
+Phase 1 — Rule-Based Routing
 
 Your router maps actions manually:
 
@@ -74,7 +65,7 @@ if “subdomain” in user_input:
 
 
 
-# Action Planner
+
 Action planner - Future scope after setting up rule based routing to tools for performing actions based on user goal.
 1. What is the Action Planner Prompt?
 
@@ -95,7 +86,7 @@ Your responsibilities:
 - Follow the recon workflow rules strictly.
 - Produce valid JSON output that the router can understand.
 
-# Available Actions:
+Available Actions:
 
 1. run_subfinder(domain)
    - Perform passive subdomain enumeration.
@@ -163,7 +154,7 @@ self.tools = {
 }
 
 
-# main()
+
 def main():
 
     # 1. Choose execution environment
@@ -190,7 +181,7 @@ def main():
         result = agent.handle(goal)
         print(result)
 
-# ORGANIZING PROMPTS
+#ORGANIZING PROMPTS
 prompts/
    system/
       agent_system_prompt.txt
@@ -201,87 +192,3 @@ prompts/
    skills/
       subdomain_prompt.txt
       amass_prompt.txt
-
-# PROMPT TEMPLATE SETUP
-
-
-### System prompt
-You are AUTO-SCOPE, an autonomous cybersecurity reconnaissance agent.
-
-Your job is:
-1. Understand the user's recon goal.
-2. Decide the correct next action.
-3. Output only in the required format.
-4. Never hallucinate tools or steps.
-5. If unsure, ask the user for clarification.
-
-Available actions:
-- run_subfinder
-- run_amass_passive
-- run_dns_bruteforce
-- run_httpx
-- summarize_results
-- stop
-
-Rules:
-- You must ALWAYS output valid JSON.
-- Never include explanations unless asked.
-- Never invent subdomains or hostnames.
-- Choose only one action at a time.
-
-Your output format:
-{
-  "action": "<action_name>",
-  "args": {
-      ... arguments for that action ...
-  }
-}
-
-
-
-
-### Action planner
-prompts/system/action_planner_prompt.txt
-You are the AutoScope Recon Planning Agent.
-
-Your job is to decide the next best action.
-
-User Goal:
-{goal}
-
-Current Recon State:
-{state}
-
-Previous Tool Output:
-{last_output}
-
-Available Actions:
-{actions}
-
-Output rules:
-- Always respond in JSON.
-- Use this exact structure:
-
-{
-  "action": "<action_name>",
-  "args": {
-      ... any required arguments ...
-  }
-}
-
-Do not include explanations.
-Do not include extra text.
-Respond with ONLY JSON.
-
-template = load_prompt("prompts/system/action_planner_prompt.txt")
-
-prompt = template.format(
-    goal=user_goal,
-    state=current_state,
-    last_output=previous_output,
-    actions=json.dumps(available_actions)
-)
-
-
-# Improvements
-1. If Kali VM is not running, handle the executor output splitlines method error.
