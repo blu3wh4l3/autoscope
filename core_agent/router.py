@@ -6,7 +6,7 @@ class Router:
             "run_subfinder" : subfinder.run
         }
     
-    def execute(self, action, args):
-        tool_fn = self.tools[action]
-        tool_fn(**args, executor=self.executor)
+    def execute(self,args):
+        tool_fn = self.tools[args["action"]]
+        tool_fn(args["args"]["domain"], self.executor)
 

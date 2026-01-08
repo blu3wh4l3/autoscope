@@ -1,21 +1,13 @@
+from core_agent.prompt import load_prompt, render_prompt
+import json
 class Agent:
     def __init__(self,llm,router):
         self.llm = llm
         self.router = router
         
-    def actionPlan(self, goal):
-        # if "nmap" in goal.lower():
-        #     print("[+] Running Nmap scan on the target....")
-        #     command = "nmap -sV 192.168.206.129"
-
-        # elif "whoami" in goal.lower():
-        #     print("[+] Running whoami command on the target....")
-        #     command = "whoami"
-        if "subdomain" in goal.lower():
-            self.action = "run_subfinder"
-            self.targetDomain  = input("Enter the target domain: ")
-            self.args = {"domain": self.targetDomain}
-            self.router.execute(self.action,self.args)
-
-        else:
-            print("[!] Invalid task: {goal}")
+    def actionPlan(self, user_goal):
+        action_prompt_template =  load_prompt("action_planning_prompt.txt")
+        action_prompt = render_prompt(action_prompt_template, goal = user_goal )
+        llm_response = self.llm.generate(action_prompt)
+        action = json.loads(llm_response)
+        return action
