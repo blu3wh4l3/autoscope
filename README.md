@@ -285,3 +285,49 @@ prompt = template.format(
 
 # Improvements
 1. If Kali VM is not running, handle the executor output splitlines method error.
+2. Action list for future
+   actions = [
+    {"name": "run_subfinder", "args": ["domain"]},
+    {"name": "run_nmap", "args": ["target_ip"]}
+]
+
+
+# ReconState
+│
+├── identity
+│   ├── target
+│   ├── target_type   (domain | ip | cidr)
+│
+├── discovery
+│   ├── subdomains
+│   ├── resolved_ips
+│
+├── web
+│   ├── live_hosts
+│   ├── technologies
+│   ├── web_servers
+│
+├── network
+│   ├── open_ports
+│   ├── services
+│   ├── shares
+│
+├── actions
+│   ├── completed
+│   ├── pending
+│   ├── blocked
+│
+├── phase
+│
+└── metadata
+
+# Agent.run() future scope
+self._plan_action()
+
+self._prepare_args()
+
+self._execute_action()
+
+self._interpret_output()
+
+self._update_state()
