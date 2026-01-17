@@ -15,6 +15,6 @@ model = "llama3.1:8b"
 executor = Executor("192.168.206.129","kali", "/home/anunv/.ssh/id_ed25519" )
 llm = LLM(provider, model, url)
 router = Router(executor)
-goal = input("What recon type do you want to perform on the target? ")
+goal = input("What would you like to do with the target? ")
 agent = Agent(llm,router)
 agent.run(goal)

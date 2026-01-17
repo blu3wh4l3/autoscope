@@ -11,4 +11,4 @@ def run(domain,executor):
     output = executor.run(command)
     with open(domains_output, "w",encoding="utf-8") as f:
         f.write(output)
-    normalize_subfinder_output(domain, output)
+    return output

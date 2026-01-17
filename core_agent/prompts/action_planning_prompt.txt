@@ -9,10 +9,29 @@ IMPORTANT:
   will be handled separately by Python code.
 - Your responsibility is ONLY to choose the correct action.
 
-Here is the list of valid actions you are allowed to choose from:
+Below are the ONLY valid actions and their precise meanings:
 
 1. run_subfinder
+   - Use this action ONLY when the goal is about:
+     • discovering subdomains
+     • virtual host enumeration
+     • DNS-based asset discovery
+   - DO NOT use this action for:
+     • port scanning
+     • service enumeration
+     • protocol detection
+
 2. run_nmap
+   - Use this action ONLY when the goal is about:
+     • port scanning
+     • service enumeration
+     • nmap scan
+     • service/version detection
+     • open ports or exposed services
+   - DO NOT use this action for:
+     • subdomain discovery
+     • DNS enumeration
+     • virtual host discovery
 
 Instructions:
 - Choose exactly ONE action from the list above.
@@ -20,6 +39,11 @@ Instructions:
 - Do NOT ask the user questions.
 - Do NOT include explanations, reasoning, or extra text.
 - If the user's goal does not clearly map to any valid action, return "invalid".
+
+If the user's goal is vague or generic (e.g., "enumeration", "scan target"),
+choose the MOST DIRECT technical interpretation:
+- "service enumeration" → run_nmap
+- "subdomain enumeration" → run_subfinder
 
 Your response MUST be ONLY a JSON object in the following format:
 

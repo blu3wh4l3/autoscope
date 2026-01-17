@@ -44,7 +44,7 @@ autoscope/
 │   ├── config.py            # SSH credentials, paths, etc.
 │   └── helpers.py
 │
-├── tests/
+├── tests
 │
 └── main.py
 
@@ -192,3 +192,13 @@ prompts/
    skills/
       subdomain_prompt.txt
       amass_prompt.txt
+
+#PROMPT TEMPLATE SETUP
+template = load_prompt("prompts/system/action_planner_prompt.txt")
+
+prompt = template.format(
+    goal=user_goal,
+    state=current_state,
+    last_output=previous_output,
+    actions=json.dumps(available_actions)
+)
