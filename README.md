@@ -331,3 +331,60 @@ self._execute_action()
 self._interpret_output()
 
 self._update_state()
+
+
+# Normalized output sample
+{
+  "tool": "subfinder",
+  "target": "example.com",
+  "results": [
+    "api.example.com",
+    "dev.example.com",
+    "test.example.com"
+  ],
+  "count": 3,
+  "timestamp": "2026-01-07T22:30:00"
+}
+
+
+# Recon State sample
+{
+  "target": "example.com",
+  "discovered_subdomains": [
+    "api.example.com",
+    "dev.example.com",
+    "test.example.com"
+  ],
+  "completed_actions": [
+    "run_subfinder"
+  ],
+  "pending_actions": [
+    "run_httpx"
+  ],
+  "last_action": "run_subfinder",
+  "status": "enumeration"
+}
+
+# Action mappings
+ACTIONS = {
+  run_subfinder:
+    skill: subfinder.run
+    normalizer: normalize_subfinder
+    label: "Subdomain enumeration"
+
+  run_nmap:
+    skill: nmap.run
+    normalizer: normalize_nmap
+    label: "Nmap scan"
+}
+
+# ACTION PARAMS BUILDER FORMAT
+{
+    "action": "run_nmap",
+    "target": {
+        "type": "ip",
+        "value": "192.168.206.129"
+    },
+    "params": {}
+}
+

@@ -1,6 +1,6 @@
 from core_agent.prompt import load_prompt, render_prompt
 from core_agent.target_extractor import extract_target
-from core_agent.arguments_builder import build_arguments
+from core_agent.action_param_builder import build_action_params
 from core_agent.actions import ACTIONS
 from rich.console import Console
 
@@ -24,7 +24,7 @@ class Agent:
         target = extract_target(user_goal)
 
         try:
-            args = build_arguments(action, target)
+            action_params = build_action_params(action, target)
         
         except Exception as e:
             console.print(f"[bold red][✗] Argument building failed: {e}[/bold red]")
@@ -36,7 +36,7 @@ class Agent:
 
         try:
             with console.status(f"[bold green] Running {action_label}..."):
-                output = self.router.execute(args)
+                output = self.router.execute(action_params)
                 if not output:
                     console.print(f"[bold red][✗] {action_label} returned no data.[/bold red]")
                     return
