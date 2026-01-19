@@ -27,7 +27,8 @@ class Agent:
             action_params = build_action_params(action, target)
         
         except Exception as e:
-            console.print(f"[bold red][✗] Argument building failed: {e}[/bold red]")
+            console.print(f"[bold red][✗] Action params building failed: {e}[/bold red]")
+            return
         action_name = action["action"]
         action_label = ACTIONS.get(action_name, {}).get("label",action_name)
         
@@ -43,8 +44,12 @@ class Agent:
 
                 console.print(f"[bold green][✓] {action_label} completed successfully")
                 console.print(
-                    f"[bold green][✓] Output saved[/bold green] → "
+                    f"[bold green][✓] Raw Output saved[/bold green] → "
                     f"[bold cyan]outputs/{{target}}[/bold cyan]"
+                )
+                console.print(
+                    f"[bold green][✓] Normalized Output saved[/bold green] → "
+                    f"[bold cyan]outputs/{{target}}/normalized[/bold cyan]"
                 )
         except Exception as e:
             console.print(f"[bold red][✗] {action_label} failed: {e}[/bold red]")

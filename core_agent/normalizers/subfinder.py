@@ -6,7 +6,6 @@ def normalize_subfinder_output(domain,raw_output):
         "target": domain,
         "results": lines,
         "count": total_subdomains
-
     }
     
 
