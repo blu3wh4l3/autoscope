@@ -10,7 +10,11 @@ class LLM:
     
     def generate(self, userprompt:str) -> str:
         payload = {
-                "model": "llama3.1:8b",   # use your local ollama model name
+                "model": "llama3.1:8b",
+                "options": {
+                    "temperature": 0
+                } ,
+                    # use your local ollama model name
                 "messages": [
                     {
                         "role": "system",
