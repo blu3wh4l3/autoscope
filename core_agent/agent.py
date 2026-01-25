@@ -10,7 +10,13 @@ class Agent:
     def run(self,user_goal):
         # Plan and prepare - part of action planning component
         # Plan - LLM selects action from goal
-        action_params, action_label = self.planner.plan_next_action(user_goal)
+        try:
+            action_params, action_label = self.planner.plan_next_action(user_goal)
+        
+        except Exception as e:
+            console.print(f"[bold red][✗] {e}[/bold red]")
+            return
+        
 
         # Execute the skill using router
         try:

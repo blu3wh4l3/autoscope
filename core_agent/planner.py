@@ -2,6 +2,7 @@ import json
 from core_agent.prompt import load_prompt, render_prompt
 from core_agent.target_extractor import extract_target
 from core_agent.action_param_builder import build_action_params
+from core_agent.goal_validator import validate_goal
 from core_agent.actions import ACTIONS
 from rich.console import Console
 
@@ -13,8 +14,13 @@ class Planner:
         self.llm = llm
 
     def plan_next_action(self, user_goal):
+
+        validated_goal = validate_goal(user_goal)
+        if not validated_goal["valid"]:
+            raise Exception("Agent does not support this action as of now")
+
         action_prompt_template =  load_prompt("action_planning_prompt.txt")
-        action_prompt = render_prompt(action_prompt_template, goal = user_goal )
+        action_prompt = render_prompt(action_prompt_template, goal = validated_goal["goal_type"])
         llm_response = self.llm.generate(action_prompt)
         action = json.loads(llm_response)
         print(f"Action returned by the LLM: {action}")
